@@ -1,11 +1,10 @@
-# healthcare-application
-Healthcare Application
+# Healthcare Application
 
-Major Technology Stack
--HTML
--Java 21
--Spring boot
--MySQL
--WebSocket
--Open API
--Lombok
+Major Technology Stack <br/>
+-HTML <br/>
+-Java 21 <br/>
+-Spring boot <br/>
+-MySQL <br/>
+-WebSocket <br/>
+-Open API <br/>
+-Lombok 
