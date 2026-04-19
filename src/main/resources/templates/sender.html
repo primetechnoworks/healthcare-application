@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hospital Management</title>
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client/dist/sockjs.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/stompjs/lib/stomp.min.js"></script>
+</head>
+<body>
+<h1>Hospital Management</h1>
+<div id="notifications"></div>
+<label id="nameLabel">Name</label>
+<input type="text" id="name" placeholder="Enter your name">
+<br/>
+<label id="dgLabel">Diagnosis</label>
+<input type="text" id="sickness" placeholder="Enter your sickness">
+<br/>
+<label id="referToLabel">Refer to</label>
+<input type="text" id="message" placeholder="Referred to">
+<br/>
+<br/>
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    let stompClient = null;
+
+    function connect() {
+    const socket = new SockJS('http://localhost:8080/ws');  // Correct the WebSocket URL
+    stompClient = Stomp.over(socket);
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame);  // Log the successful connection
+        //stompClient.subscribe('/topic/notifications', function (message) {
+            //showNotification(message.body);  // Handle incoming messages
+        //});
+    }, function (error) {
+        console.error('WebSocket connection error: ' + error);  // Log WebSocket errors
+    });
+}
+
+
+  function sendMessage() {
+    const name = document.getElementById('name').value;
+    const sickness = document.getElementById('sickness').value;
+    const message = document.getElementById('message').value;
+
+    const messagePayload = {
+    name: name,
+    sickness: sickness,
+    message: message
+    };
+    if (stompClient && stompClient.connected) {
+        stompClient.send('/app/sendMessage', {}, JSON.stringify(messagePayload));
+    } else {
+        console.error('WebSocket connection is not established.');
+    }
+}
+
+    /*function showNotification(message) {
+        const notifications = document.getElementById('notifications');
+        const notification = document.createElement('p');
+        notification.textContent = message;
+        notifications.appendChild(notification);
+    }*/
+
+    connect();
+</script>
+</body>
+</html>
